@@ -10,4 +10,4 @@ def extract_component_as_image(image, frameNumber, objectRectangle: Tuple[int, i
     # Seleksi gambar berdasarkan koordinat yang berhasil di ekstrak
     selected_component_image = image[y_top:y_bottom, x_left:x_right]
     #  Write gambar ke jpg sesuai dengan direktor nama component dan frame keberapa sekarang
-    cv2.imwrite(f"{file_dir}/{frameNumber}/{objectName}.jpg", selected_component_image)
+    cv2.imwrite(f"{file_dir}/{frameNumber}/{frameNumber}-{objectName}.jpg", selected_component_image)
