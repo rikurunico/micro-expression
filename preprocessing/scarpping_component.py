@@ -7,7 +7,20 @@ class ObjectRectangle(TypedDict):
     y_highest: int
     y_lowest: int
 
-def extract_component_by_images(image, shape, frameName, objectName: Literal["mouth", "eye_left", "eye_right", "eyebrow_left", "eyebrow_right"], objectStart, objectEnd,  objectRectangle: ObjectRectangle, pergeseranPixel=0):
+class PixelShifting(TypedDict):
+    pixel_x: int
+    pixel_y: int
+
+def extract_component_by_images(
+        image, 
+        shape, 
+        frameName, 
+        objectName: Literal["mouth", "eye_left", "eye_right", "eyebrow_left", "eyebrow_right", "nose_right", "nose_left"], 
+        objectStart, 
+        objectEnd,  
+        objectRectangle: ObjectRectangle, 
+        pixelShifting=PixelShifting
+    ):
     print(f"\n{frameName}-{objectName.capitalize()}")
 
     # for i in range(objectStart, objectEnd):
@@ -29,13 +42,13 @@ def extract_component_by_images(image, shape, frameName, objectName: Literal["mo
     height_object = y_lowest - y_highest
 
     # Menggeser tepi kiri sisi gambar sebanyak variabel pergeseran_pixel ke kiri
-    x_left -= pergeseranPixel 
+    x_left -= pixelShifting['pixel_x'] 
     # Menggeser tepi atas sisi gambar sebanyak variabel pergeseran_pixel ke atas
-    y_highest -= pergeseranPixel  
+    y_highest -= pixelShifting['pixel_y']   
     # Menambahkan sebanyak variabel pergeseran_pixel ke lebar (sisi kiri dan kanan)
-    width_object += (pergeseranPixel * 2)  
+    width_object += (pixelShifting['pixel_x'] * 2)  
     # Menambahkan sebanyak variabel pergeseran_pixel ke tinggi (sisi atas dan bawah)
-    height_object += (pergeseranPixel * 2) 
+    height_object += (pixelShifting['pixel_y'] * 2) 
 
     # Memastikan koordinat tetap berada dalam batas size gambar
     x_left = max(0, x_left)  

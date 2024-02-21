@@ -1,7 +1,7 @@
 from typing import Literal, Tuple
 import os, cv2
 
-def extract_component_as_image(image, frameNumber, objectRectangle: Tuple[int, int, int, int], objectName: Literal["mouth", "eye_left", "eye_right", "eyebrow_left", "eyebrow_right"]):
+def extract_component_as_image(image, frameNumber, objectRectangle: Tuple[int, int, int, int], objectName: Literal["mouth", "eye_left", "eye_right", "eyebrow_left", "eyebrow_right", "nose_right", "nose_left"]):
     file_dir = "dataset/element_images"
     # Buat path directory jika folder/file pathnya tidak ada
     os.makedirs(f"{file_dir}/{frameNumber}", exist_ok=True)
