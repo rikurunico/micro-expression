@@ -59,5 +59,5 @@ def extract_component_by_images(
     # Menggambar sebuah persegi panjang di sekitar ROI dengan koordinat yang sudah dihitung
     # cv2.rectangle(image, (x_left, y_highest), (x_left + width_object, y_highest + height_object), (0, 255, 0), 2)
     # Memanggil fungsi ekstraksi gambar dengan parameter yang sesuai
-    extract_component_as_image(image, frameName, (y_highest, x_left + width_object, y_highest + height_object, x_left), objectName)
-    print("Width: {}, Height: {}".format(width_object, height_object))
+    print(extract_component_as_image(image, frameName, (y_highest, x_left + width_object, y_highest + height_object, x_left), objectName))
+    # print("Width: {}, Height: {}".format(width_object, height_object))
