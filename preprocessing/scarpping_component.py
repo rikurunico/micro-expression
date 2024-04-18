@@ -16,8 +16,6 @@ def extract_component_by_images(
         shape, 
         frameName, 
         objectName: Literal["mouth", "eye_left", "eye_right", "eyebrow_left", "eyebrow_right", "nose_right", "nose_left"], 
-        objectStart, 
-        objectEnd,  
         objectRectangle: ObjectRectangle, 
         pixelShifting=PixelShifting
     ):
@@ -27,10 +25,10 @@ def extract_component_by_images(
     #     x = shape.part(i).x
     #     y = shape.part(i).y
 
-        # # Print face landmark with label
-        # label = "{}".format(i)
-        # cv2.circle(image, (x, y), 4, (255, 0, 0), -1)
-        # cv2.putText(image, label, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1, cv2.LINE_AA)
+    # # Print face landmark with label
+    # label = "{}".format(i)
+    # cv2.circle(image, (x, y), 4, (255, 0, 0), -1)
+    # cv2.putText(image, label, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1, cv2.LINE_AA)
 
     # Setup shape part dari parameter objectRectangle
     x_right = shape.part(objectRectangle["x_right"]).x
@@ -59,5 +57,6 @@ def extract_component_by_images(
     # Menggambar sebuah persegi panjang di sekitar ROI dengan koordinat yang sudah dihitung
     # cv2.rectangle(image, (x_left, y_highest), (x_left + width_object, y_highest + height_object), (0, 255, 0), 2)
     # Memanggil fungsi ekstraksi gambar dengan parameter yang sesuai
-    print(extract_component_as_image(image, frameName, (y_highest, x_left + width_object, y_highest + height_object, x_left), objectName))
+    block_data = extract_component_as_image(image, frameName, (y_highest, x_left + width_object, y_highest + height_object, x_left), objectName)
+    return block_data
     # print("Width: {}, Height: {}".format(width_object, height_object))
