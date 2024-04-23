@@ -29,6 +29,8 @@ def extract_component_as_image(
     # Kalo mata ukurannya 56 height nya ,98 untuk widthnya
     # 56 / 7 = 8 array kebawah
     # 98 / 7 = 14 array kesamping
+    
+    # buatkan agar dari y top dan x left 
 
     # modulo y_top, x_right, y_bottom, x_left with block_size and loop with -1 until value of modulo 0
     while y_top % block_size != 0:
