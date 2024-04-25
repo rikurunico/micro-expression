@@ -33,31 +33,41 @@ def extract_component_as_image(
     # buatkan agar dari y top dan x left 
 
     # modulo y_top, x_right, y_bottom, x_left with block_size and loop with -1 until value of modulo 0
-    while y_top % block_size != 0:
-        y_top -= 1
+    # while y_top % block_size != 0:
+    #     y_top -= 1
 
-    while x_right % block_size != 0:
-        x_right -= 1
+    # while x_right % block_size != 0:
+    #     x_right -= 1
 
-    while y_bottom % block_size != 0:
-        y_bottom -= 1
+    # while y_bottom % block_size != 0:
+    #     y_bottom -= 1
 
-    while x_left % block_size != 0:
-        x_left -= 1
+    # while x_left % block_size != 0:
+    #     x_left -= 1
+    width_object = x_right - x_left
+    height_object = y_bottom - y_top
+
+    print("Print didalam", width_object, height_object)
+
+    while width_object % block_size != 0:
+        width_object -= 1
+
+    while height_object % block_size != 0:
+        height_object -= 1
 
     selected_component_image = image.copy()
 
     # Draw rectangle around the selected component
-    cv2.rectangle(
-        selected_component_image,
-        (x_left, y_top),
-        (x_right, y_bottom),
-        (0, 255, 0),
-        1,
-    )
-
+    # cv2.rectangle(
+    #     selected_component_image,
+    #     (x_left, y_top),
+    #     (x_left + width_object, y_top + height_object),
+    #     (0, 255, 0),
+    #     1,
+    # )
+    print("Print after didalam", width_object, height_object)
     # Crop the selected component
-    selected_component_image = selected_component_image[y_top:y_bottom, x_left:x_right]
+    selected_component_image = selected_component_image[y_top:y_top + height_object + 1, x_left:x_left + width_object + 1]
 
     # Grayscale the image
     selected_component_image_gray = cv2.cvtColor(

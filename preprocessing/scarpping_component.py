@@ -1,3 +1,4 @@
+import numpy as np
 from typing import Literal, TypedDict
 from preprocessing.extract_to_image import extract_component_as_image
 
@@ -59,23 +60,19 @@ def extract_component_by_images(
     # Menambahkan sebanyak variabel pergeseran_pixel ke tinggi (sisi atas dan bawah)
     height_object += pixelShifting["pixel_y"] * 2
 
-    # Memastikan koordinat tetap berada dalam batas size gambar
-    x_left = max(0, x_left)
-    y_highest = max(0, y_highest)
-    width_object = min(width_object, image.shape[1] - x_left)
-    height_object = min(height_object, image.shape[0] - y_highest)
-
     # Menggambar sebuah persegi panjang di sekitar ROI dengan koordinat yang sudah dihitung
     # cv2.rectangle(image, (x_left, y_highest), (x_left + width_object, y_highest + height_object), (0, 255, 0), 2)
     # Memanggil fungsi ekstraksi gambar dengan parameter yang sesuai
 
     # Periksa objectName dengan if-elif-else
-    if objectName == "mouth":
-        width_object = 140
-        height_object = 42
-    elif objectName == "eye_left" or objectName == "eye_right":
-        width_object = 98
-        height_object = 56
+    # if objectName == "mouth":
+    #     # width_object = 140
+    #     # height_object = 70
+    # elif objectName == "eye_left" or objectName == "eye_right":
+    #     # width_object = 91
+    #     width_object = 28
+    #     # height_object = 56
+    #     height_object = 28
     # elif objectName == "eyebrow_left" or objectName == "eyebrow_right":
     #     width_object = 50
     #     height_object = 10
@@ -85,13 +82,23 @@ def extract_component_by_images(
     # else:
     #     print("Object name not recognized")
 
+    # Memastikan koordinat tetap berada dalam batas size gambar
+    x_left = max(0, x_left)
+    y_highest = max(0, y_highest)
+    width_object = min(width_object, image.shape[1] - x_left)
+    height_object = min(height_object, image.shape[0] - y_highest)
+
     print(f"width_object: {width_object}, height_object: {height_object}")
 
-    block_data = extract_component_as_image(
+    block_data = np.array(extract_component_as_image(
         image,
         frameName,
         (y_highest, x_left + width_object, y_highest + height_object, x_left),
         objectName,
-    )
-    return block_data
+    ))
+
+    # block_data_resize = np.resize(block_data, (256, 256))
+    # resize width nya 140 dan heigthnya 42
+    # return np.resize(block_data,)
+    return block_data;
     # print("Width: {}, Height: {}".format(width_object, height_object))
