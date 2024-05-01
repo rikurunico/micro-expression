@@ -19,6 +19,7 @@ class PixelShifting(TypedDict):
 def extract_component_by_images(
     image,
     shape,
+    block_size,
     frameName,
     objectName: Literal[
         "mouth",
@@ -84,22 +85,29 @@ def extract_component_by_images(
     #     print("Object name not recognized")
 
     # Memastikan koordinat tetap berada dalam batas size gambar
+    # x_left = maksimum antara 0 dan x_left
     x_left = max(0, x_left)
+    # y_highest = maksimum antara 0 dan y_highest
     y_highest = max(0, y_highest)
+    # width_object = minimum antara width_object dan image.shape[1] - x_left
     width_object = min(width_object, image.shape[1] - x_left)
+    # height_object = minimum antara height_object dan image.shape[0] - y_highest
     height_object = min(height_object, image.shape[0] - y_highest)
 
     print(f"width_object: {width_object}, height_object: {height_object}")
 
-    block_data = np.array(extract_component_as_image(
-        image,
-        frameName,
-        (y_highest, x_left + width_object, y_highest + height_object, x_left),
-        objectName,
-    ))
+    block_data = np.array(
+        extract_component_as_image(
+            image,
+            frameName,
+            (y_highest, x_left + width_object, y_highest + height_object, x_left),
+            objectName,
+            block_size,
+        )
+    )
 
     # block_data_resize = np.resize(block_data, (256, 256))
     # resize width nya 140 dan heigthnya 42
     # return np.resize(block_data,)
-    return block_data;
+    return block_data
     # print("Width: {}, Height: {}".format(width_object, height_object))
