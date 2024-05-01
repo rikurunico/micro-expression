@@ -4,3 +4,5 @@ dataset/element_images/
 dataset/sub01/
 preprocessing/__pycache__/
 feature_extraction/__pycache__/
+output.csv
+output.xlsx

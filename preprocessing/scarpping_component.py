@@ -1,4 +1,5 @@
 import numpy as np
+import os
 from typing import Literal, TypedDict
 from preprocessing.extract_to_image import extract_component_as_image
 

@@ -47,8 +47,6 @@ def extract_component_as_image(
     width_object = x_right - x_left
     height_object = y_bottom - y_top
 
-    print("Print didalam", width_object, height_object)
-
     while width_object % block_size != 0:
         width_object -= 1
 
@@ -65,7 +63,7 @@ def extract_component_as_image(
     #     (0, 255, 0),
     #     1,
     # )
-    print("Print after didalam", width_object, height_object)
+    print("Print after resize", width_object, height_object)
     # Crop the selected component
     selected_component_image = selected_component_image[y_top:y_top + height_object + 1, x_left:x_left + width_object + 1]
 
