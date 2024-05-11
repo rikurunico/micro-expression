@@ -66,17 +66,15 @@ def extract_component_by_images(
     # Memanggil fungsi ekstraksi gambar dengan parameter yang sesuai
 
     # Periksa objectName dengan if-elif-else
-    # if objectName == "mouth":
-    #     # width_object = 140
-    #     # height_object = 70
-    # elif objectName == "eye_left" or objectName == "eye_right":
-    #     # width_object = 91
-    #     width_object = 28
-    #     # height_object = 56
-    #     height_object = 28
-    # elif objectName == "eyebrow_left" or objectName == "eyebrow_right":
-    #     width_object = 50
-    #     height_object = 10
+    if objectName == "mouth":
+        width_object = 140
+        height_object = 42
+    elif objectName == "eye_left" or objectName == "eye_right":
+        width_object = 91
+        height_object = 56
+    elif objectName == "eyebrow_left" or objectName == "eyebrow_right":
+        width_object = 112
+        height_object = 42
     # elif objectName == "nose_left" or objectName == "nose_right":
     #     width_object = 30
     #     height_object = 40
@@ -101,5 +99,5 @@ def extract_component_by_images(
     # block_data_resize = np.resize(block_data, (256, 256))
     # resize width nya 140 dan heigthnya 42
     # return np.resize(block_data,)
-    return block_data;
+    return block_data
     # print("Width: {}, Height: {}".format(width_object, height_object))

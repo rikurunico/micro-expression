@@ -1,13 +1,12 @@
 import numpy as np
 
-
-class getVektor:
+class Vektor:
     def __init__(self, pocOutput, blockSize):
         self.blockSize = blockSize
         self.poc = pocOutput[0]
         self.coorAwal = pocOutput[1] 
 
-    def createVektor(self):
+    def getVektor(self):
         mb_x = self.blockSize  # panjang macroblock
         mb_y = self.blockSize  # lebar macroblock
 
