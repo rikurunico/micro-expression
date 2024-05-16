@@ -1,26 +1,24 @@
 import numpy as np
-
+from helper.helper import format_number_and_round_numpy
 class Quadran:
-    def __init__(self, coorData, blockSize):
+    def __init__(self, coorData):
         self.dataA = coorData[:, 4]
         self.dataB = coorData[:, 5]
-        self.blockSize = blockSize
     
     def getQuadran(self):
         quadranData = np.empty((len(self.dataA), 6), dtype=object)
-        minimum_value = -self.blockSize/2
-        maximum_value = self.blockSize/2
+
         for i in range(len(self.dataA)):
             X = np.int_(self.dataA[i])
             Y = np.int_(self.dataA[i])
             
-            # Cek apakah nilai X berada di dalam rentang yang diinginkan
-            if X < minimum_value or X > maximum_value:
-                X = np.clip(self.dataA[i], minimum_value, maximum_value).astype(int)
+            # # Cek apakah nilai X berada di dalam rentang yang diinginkan
+            # if X < minimum_value or X > maximum_value:
+            #     X = np.clip(self.dataA[i], minimum_value, maximum_value).astype(int)
             
-            # Cek apakah nilai Y berada di dalam rentang yang diinginkan
-            if Y < minimum_value or Y > maximum_value:
-                Y = np.clip(self.dataB[i], minimum_value, maximum_value).astype(int)
+            # # Cek apakah nilai Y berada di dalam rentang yang diinginkan
+            # if Y < minimum_value or Y > maximum_value:
+            #     Y = np.clip(self.dataB[i], minimum_value, maximum_value).astype(int)
                 
             # print('Data getQuadran ' , i, ' : ', self.dataA[i])
             # print('Data x ' , i, ' : ', X, ' Tipe', type(X))
@@ -45,5 +43,12 @@ class Quadran:
                     quadranLabel = 'Q4'
                 else :
                     quadranLabel = 'No Quadran'
-            quadranData[i, :] = [ np.str_(i) ,X, Y, tetha, magnitude, quadranLabel]
+            quadranData[i, :] = [ 
+                np.str_(i),
+                X, 
+                Y, 
+                tetha, 
+                format_number_and_round_numpy(magnitude), 
+                quadranLabel
+            ]
         return quadranData
