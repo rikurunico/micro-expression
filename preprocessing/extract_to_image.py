@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 from typing import Tuple, Literal
 
-
 def extract_component_as_image(
     image,
     frameNumber,
@@ -30,8 +29,8 @@ def extract_component_as_image(
     # Kalo mata ukurannya 56 height nya ,98 untuk widthnya
     # 56 / 7 = 8 array kebawah
     # 98 / 7 = 14 array kesamping
-
-    # buatkan agar dari y top dan x left
+    
+    # buatkan agar dari y top dan x left 
 
     # modulo y_top, x_right, y_bottom, x_left with block_size and loop with -1 until value of modulo 0
     # while y_top % block_size != 0:
@@ -45,8 +44,6 @@ def extract_component_as_image(
 
     # while x_left % block_size != 0:
     #     x_left -= 1
-
-    # Menghitung lebar dan tinggi komponen yang dipilih
     width_object = x_right - x_left
     height_object = y_bottom - y_top
 
@@ -68,9 +65,7 @@ def extract_component_as_image(
     # )
     print("Print after resize", width_object, height_object)
     # Crop the selected component
-    selected_component_image = selected_component_image[
-        y_top : y_top + height_object + 1, x_left : x_left + width_object + 1
-    ]
+    selected_component_image = selected_component_image[y_top:y_top + height_object + 1, x_left:x_left + width_object + 1]
 
     # Grayscale the image
     selected_component_image_gray = cv2.cvtColor(
@@ -86,7 +81,6 @@ def extract_component_as_image(
     # Get pixel values for blocks
     # blocks_data = split_into_blocks(selected_component_image_gray, file_dir, frameNumber, block_size)
     return selected_component_image_gray
-
 
 # def split_into_blocks(image, file_dir, frameNumber, block_size):
 #     """Returns a 2D array containing pixel values for each block in the image."""
@@ -109,7 +103,6 @@ def extract_component_as_image(
 #     cv2.imwrite(os.path.join(file_dir, f"annotated_frame_block-{frameNumber:02}.jpg"), image, )
 #     return blocks
 
-
 def split_into_blocks(image, file_dir, frameNumber, block_size):
     """Returns a 2D array containing pixel values for each block in the image."""
     blocks = []
@@ -118,7 +111,7 @@ def split_into_blocks(image, file_dir, frameNumber, block_size):
         for j in range(0, image.shape[1], block_size):
             if i + block_size <= image.shape[0] and j + block_size <= image.shape[1]:
                 # Crop the block
-                block = image[i : i + block_size, j : j + block_size]
+                block = image[i:i + block_size, j:j + block_size]
                 # Append the grayscale pixel values of the block as a numpy array
                 row.append(np.array(block))
                 # cv2.rectangle(
