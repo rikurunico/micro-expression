@@ -17,10 +17,10 @@ def extract_component_as_image(
         "nose_right",
         "nose_left",
     ],
-    block_size,
+    # block_size=7,
 ):
     # Construct directory path for saving images
-    file_dir = f"dataset/element_images/{objectName}/{frameNumber:02}"
+    file_dir = f"dataset/component_to_images/{objectName}/{frameNumber:02}"
 
     # Create directory if it doesn't exist
     os.makedirs(file_dir, exist_ok=True)
@@ -50,13 +50,11 @@ def extract_component_as_image(
     width_object = x_right - x_left
     height_object = y_bottom - y_top
 
-    # Menyesuaikan lebar agar dapat dibagi dengan ukuran blok
-    while width_object % block_size != 0:
-        width_object -= 1
+    # while width_object % block_size != 0:
+    #     width_object -= 1
 
-    # Menyesuaikan tinggi agar dapat dibagi dengan ukuran blok
-    while height_object % block_size != 0:
-        height_object -= 1
+    # while height_object % block_size != 0:
+    #     height_object -= 1
 
     selected_component_image = image.copy()
 

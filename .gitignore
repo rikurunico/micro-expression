@@ -1,8 +1,13 @@
 models/
 dataset/video_to_images/
-dataset/element_images/
+dataset/component_to_images/
 dataset/sub01/
+dataset/sub02/
 preprocessing/__pycache__/
 feature_extraction/__pycache__/
+clasification/__pycache__/
+helper/__pycache__/
 output.csv
 output.xlsx
+output/
+test-output/
