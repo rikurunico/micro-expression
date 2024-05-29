@@ -49,7 +49,7 @@ class SVMClassifier:
             # Medium Range: 1, 10, 100
             # High Range: 10, 100, 1000
             param_grid = {
-                'C': [0.01, 0.1, 1, 10, 100],
+                'C': [0.01, 0.1, 1, 10],
                 'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
                 'gamma': ['scale', 'auto']
             }

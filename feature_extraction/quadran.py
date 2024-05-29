@@ -10,7 +10,7 @@ class Quadran:
 
         for i in range(len(self.dataA)):
             X = np.int_(self.dataA[i])
-            Y = np.int_(self.dataA[i])
+            Y = np.int_(self.dataB[i])
             
             # # Cek apakah nilai X berada di dalam rentang yang diinginkan
             # if X < minimum_value or X > maximum_value:
@@ -47,7 +47,7 @@ class Quadran:
                 np.str_(i),
                 X, 
                 Y, 
-                tetha, 
+                format_number_and_round_numpy(tetha), 
                 format_number_and_round_numpy(magnitude), 
                 quadranLabel
             ]

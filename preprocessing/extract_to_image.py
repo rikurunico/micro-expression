@@ -63,7 +63,7 @@ def extract_component_as_image(
     #     (0, 255, 0),
     #     1,
     # )
-    print("Print after resize", width_object, height_object)
+    # print("Print after resize", width_object, height_object)
     # Crop the selected component
     selected_component_image = selected_component_image[y_top:y_top + height_object + 1, x_left:x_left + width_object + 1]
 
