@@ -11,5 +11,5 @@ clasification/__pycache__/
 helper/__pycache__/
 output.csv
 output.xlsx
-output/
+output*
 test-output/
