@@ -1,30 +1,23 @@
 import cv2, os
 
 # Buat fungsi agar bisa dipanggil di codebase main (nantinya)
-def get_frames_by_input_video(pathInputVideo, pathOutputImage = "dataset/video_to_images", framePerSecond=60):
+def get_frames_by_input_video(
+    pathInputVideo, pathOutputImage="dataset/video_to_images", framePerSecond=60
+):
     # Cek apakah filenya terdeteksi
     if not os.path.exists(pathInputVideo):
         print(f"Path file {pathInputVideo} tidak valid")
-        return 
-    
+        return
+
     # Buat path directory jika folder/file pathnya tidak ada
     os.makedirs(pathOutputImage, exist_ok=True)
     # Looping untuk menghapus file convert image didalam folder
-    for filename in os.listdir(pathOutputImage):    
+    for filename in os.listdir(pathOutputImage):
         filepath = os.path.join(pathOutputImage, filename)
         os.remove(filepath)
 
     # Convert path video ke video capture
     vidcap = cv2.VideoCapture(pathInputVideo)
-
-    # Set frame rate persecond dari input video
-    # vidcap.set(cv2.CAP_PROP_FPS, framePerSecond)
-
-    # Get frame count yang didapat dari video cap (durasi video * frame persecond dari video)
-    # frame_count = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
-
-    # Set # Get frame count yang didapat ke video cap (durasi video * frame persecond dari video)
-    # vidcap.set(cv2.CAP_PROP_POS_FRAMES, frame_count)
 
     # Buat variabel untuk looping while
     count = 1
@@ -39,7 +32,7 @@ def get_frames_by_input_video(pathInputVideo, pathOutputImage = "dataset/video_t
         cv2.imwrite(f"{pathOutputImage}/frame{count}.jpg", image)
         # count ++ untuk melanjutkan looping ke frame berikutnya
         count += 1
-        # hitung waktu diambilnya frame ke sekian detik dari durasi video 
+        # hitung waktu diambilnya frame ke sekian detik dari durasi video
         expected_frame_time = count / framePerSecond
-        # set waktu frame yang diambil 
+        # set waktu frame yang diambil
         vidcap.set(cv2.CAP_PROP_POS_MSEC, expected_frame_time * 1000)

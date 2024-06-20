@@ -1,10 +1,16 @@
 import os
 import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import (
+    cross_val_score,
+    KFold,
+    train_test_split,
+    GridSearchCV,
+)
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 import joblib
+import numpy as np
 
 
 class KNNClassifier:
@@ -26,10 +32,11 @@ class KNNClassifier:
         self.y_train = None
         self.y_test = None
         self.model = None
+        self.label_encoder = LabelEncoder()
 
     def load_data(self):
         data = pd.read_csv(self.dataset_file)
-        print(self.dataset_file)
+        print(f"Loaded dataset from {self.dataset_file}\n")
 
         if self.feature_column is None and (
             self.except_feature_column is None or self.except_feature_column == [None]
@@ -45,9 +52,7 @@ class KNNClassifier:
         elif self.feature_column is not None:
             self.X = data[self.feature_column].values
 
-        self.y = LabelEncoder().fit_transform(
-            data[self.label_column].values
-        )  # Encode label
+        self.y = self.label_encoder.fit_transform(data[self.label_column].values)
 
     def split_data(self, test_size=0.2, random_state=0):
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
@@ -62,39 +67,24 @@ class KNNClassifier:
     def train_model(self, n_neighbors=5, metric="minkowski", p=2, autoParams=False):
         if autoParams:
             param_grid = {
-                "n_neighbors": [3, 5, 7, 9, 11],
+                "n_neighbors": np.arange(1, 20),
                 "metric": ["minkowski", "euclidean", "manhattan"],
                 "p": [1, 2],
             }
 
-            best_params = {"combination": {}, "accuracy": 0}
+            # gunakan KFold dengan k=10
+            cv = KFold(n_splits=10, shuffle=True, random_state=0)
 
-            for n_neighbors in param_grid["n_neighbors"]:
-                for metric in param_grid["metric"]:
-                    for p in param_grid["p"]:
-                        model = KNeighborsClassifier(
-                            n_neighbors=n_neighbors, metric=metric, p=p
-                        )
-                        model.fit(self.X_train, self.y_train)
-                        predictions = model.predict(self.X_test)
-                        accuracy = accuracy_score(self.y_test, predictions)
+            grid_search = GridSearchCV(
+                KNeighborsClassifier(), param_grid, cv=cv, n_jobs=-1
+            )
 
-                        if accuracy > best_params["accuracy"] and accuracy != 1:
-                            best_params["combination"] = {
-                                "n_neighbors": n_neighbors,
-                                "metric": metric,
-                                "p": p,
-                            }
-                            best_params["accuracy"] = accuracy
-
-            print("\nBest combination found:")
-            print(best_params["combination"])
-            print(f"Best accuracy: {best_params['accuracy']}")
-
-            self.model = KNeighborsClassifier(**best_params["combination"])
-            self.model.fit(self.X_train, self.y_train)
+            grid_search.fit(self.X_train, self.y_train)
+            print(f"Best hyperparameters: {grid_search.best_params_}")
+            self.model = grid_search.best_estimator_
         else:
-            print("n_neighbors:", n_neighbors, "Metric:", metric, "P:", p)
+            print("Training model with specified parameters:")
+            print(f"n_neighbors: {n_neighbors}, metric: {metric}, p: {p}")
             self.model = KNeighborsClassifier(
                 n_neighbors=n_neighbors, metric=metric, p=p
             )
@@ -105,15 +95,28 @@ class KNNClassifier:
         accuracy = accuracy_score(self.y_test, predictions)
         cm = confusion_matrix(self.y_test, predictions)
 
-        print("Accuracy:", accuracy)
+        print("\nModel Evaluation:")
+        print(f"Test Accuracy: {accuracy:.4f}")
         print("\nConfusion Matrix:")
         print(cm)
 
-    def save_model(self, filename="knn_model.joblib"):
+    # def save_model(self, filename="knn_model.joblib"):
+    #     output_model_path = "models"
+    #     if not os.path.exists(output_model_path):
+    #         os.makedirs(output_model_path)
+    #     joblib.dump(self.model, os.path.join(output_model_path, filename))
+    #     print(f"Model saved to {os.path.join(output_model_path, filename)}")
+
+    def save_model(
+        self, filename="svm_model.joblib", label_encoder_filename="label_encoder.joblib"
+    ):
         output_model_path = "models"
         if not os.path.exists(output_model_path):
             os.makedirs(output_model_path)
         joblib.dump(self.model, os.path.join(output_model_path, filename))
+        joblib.dump(
+            self.label_encoder, os.path.join(output_model_path, label_encoder_filename)
+        )
 
 
 # Example usage:
