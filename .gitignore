@@ -5,6 +5,7 @@ dataset/sub01/
 dataset/sub02/
 dataset/casme/
 dataset/casme_custom/
+dataset/casme_custom_from_one/
 preprocessing/__pycache__/
 feature_extraction/__pycache__/
 clasification/__pycache__/

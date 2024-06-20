@@ -19,6 +19,7 @@ class SVMClassifier:
         self.y_train = None
         self.y_test = None
         self.model = None
+        self.label_encoder = LabelEncoder()
 
     def load_data(self):
         data = pd.read_csv(self.dataset_file)
@@ -32,7 +33,8 @@ class SVMClassifier:
         elif self.feature_column is not None:
             self.X = data[self.feature_column].values
         
-        self.y = LabelEncoder().fit_transform(data[self.label_column].values)  # Encode label
+        # self.y = LabelEncoder().fit_transform(data[self.label_column].values)  # Encode label
+        self.y = self.label_encoder.fit_transform(data[self.label_column].values)  # Encode label
     def split_data(self, test_size=0.2, random_state=0):
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             self.X, self.y, test_size=test_size, random_state=random_state
@@ -90,6 +92,21 @@ class SVMClassifier:
             print("C:", C, "Kernel:", kernel, "Gamma:", gamma)
             self.model = SVC(C=C, kernel=kernel, gamma=gamma)
             self.model.fit(self.X_train, self.y_train)
+        
+    def train_model_with_cross_validation(self, param_grid=None, cv=10):
+        if param_grid is None:
+            param_grid = {
+                'C': [0.01, 0.1, 1, 10],
+                'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+                'gamma': ['scale', 'auto']
+            }
+        
+        grid_search = GridSearchCV(SVC(), param_grid, cv=cv, scoring='accuracy')
+        grid_search.fit(self.X_train, self.y_train)
+        self.model = grid_search.best_estimator_
+        
+        print(f"Best parameters found: {grid_search.best_params_}")
+        print(f"Best cross-validation accuracy: {grid_search.best_score_}")
 
     def evaluate_model(self):
         predictions = self.model.predict(self.X_test)
@@ -100,8 +117,9 @@ class SVMClassifier:
         print("\nConfusion Matrix:")
         print(cm)
 
-    def save_model(self, filename='svm_model.joblib'):
+    def save_model(self, filename='svm_model.joblib', label_encoder_filename='label_encoder.joblib'):
         output_model_path = 'models'
         if not os.path.exists(output_model_path):
             os.makedirs(output_model_path)
         joblib.dump(self.model, os.path.join(output_model_path, filename))
+        joblib.dump(self.label_encoder, os.path.join(output_model_path, label_encoder_filename)) 
