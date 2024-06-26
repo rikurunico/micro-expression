@@ -79,7 +79,7 @@ class KNNClassifier:
         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=self.label_encoder.classes_, yticklabels=self.label_encoder.classes_)
         plt.xlabel("Predicted labels")
         plt.ylabel("True labels")
-        plt.title("Confusion Matrix")
+        plt.title(f"Confusion Matrix (Accuracy: {accuracy:.4f})")
         plt.show()
 
         print("\nModel Evaluation:")
