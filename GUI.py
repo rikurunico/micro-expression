@@ -17,6 +17,7 @@ from preprocessing.input_to_image import get_frames_by_input_video
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+from PIL import Image, ImageTk
 
 # Memuat model dan label encoder
 model_hidung = joblib.load("models/knn_model_dengan_hidung.joblib")
@@ -136,6 +137,10 @@ def get_calculate_from_predict(list_decoded_predictions):
 
 # Fungsi untuk memproses video dan membuat prediksi
 def process_video(video_path, output_image_directory, print_image=False):
+
+    # Print nama file video
+    print(f"Processing video: {video_path}")
+
     fps = cv2.VideoCapture(video_path).get(cv2.CAP_PROP_FPS)
     gambar = get_frames_by_input_video(
         video_path, output_image_directory, framePerSecond=fps
@@ -191,6 +196,34 @@ def process_video(video_path, output_image_directory, print_image=False):
                         objectRectangle=component_info["object_rectangle"],
                         pixelShifting=component_info["pixel_shifting"],
                         objectDimension=component_info["object_dimension"],
+                    )
+
+                    x_right = shape.part(
+                        component_info["object_rectangle"]["x_right"]
+                    ).x
+                    x_left = shape.part(component_info["object_rectangle"]["x_left"]).x
+                    y_highest = shape.part(
+                        component_info["object_rectangle"]["y_highest"]
+                    ).y
+                    y_lowest = shape.part(
+                        component_info["object_rectangle"]["y_lowest"]
+                    ).y
+
+                    color = (0, 255, 0)  # Green color for rectangle
+                    thickness = 2
+
+                    cv2.rectangle(
+                        image,
+                        (
+                            x_left - component_info["pixel_shifting"]["pixel_x"],
+                            y_highest - component_info["pixel_shifting"]["pixel_y"],
+                        ),
+                        (
+                            x_right + component_info["pixel_shifting"]["pixel_x"],
+                            y_lowest + component_info["pixel_shifting"]["pixel_y"],
+                        ),
+                        color,
+                        thickness,
                     )
 
                     if data_blocks_first_image[component_name] is None:
@@ -281,6 +314,13 @@ def process_video(video_path, output_image_directory, print_image=False):
 
             index[component_name] += 1
 
+            cv2.imshow("Video", image)
+            
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
+            
+
+    cv2.destroyAllWindows()
     return frames_data_all_component
 
 
