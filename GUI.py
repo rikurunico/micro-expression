@@ -212,6 +212,13 @@ def process_video(video_path, output_image_directory, print_image=False):
                     color = (0, 255, 0)  # Green color for rectangle
                     thickness = 2
 
+                    # Gambar Landmarks
+                    for i in range(0, 68):
+                        x = shape.part(i).x
+                        y = shape.part(i).y
+                        cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+
+                    # Draw rectangle around the component
                     cv2.rectangle(
                         image,
                         (
@@ -314,13 +321,23 @@ def process_video(video_path, output_image_directory, print_image=False):
 
             index[component_name] += 1
 
-            cv2.imshow("Video", image)
-            
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-            
+            # jika var_show_image bernilai True, maka tampilkan preview gambar
+            if var_show_image.get():
+                # Embed into TKinker
+                cv2image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
+                img = Image.fromarray(cv2image)
+                img = ImageTk.PhotoImage(image=img)
 
-    cv2.destroyAllWindows()
+                # Update image
+                label_image.img = img
+                label_image.config(image=img)
+                label_image.update()
+
+                if cv2.waitKey(1) & 0xFF == ord("q"):
+                    break
+
+        cv2.destroyAllWindows()
+
     return frames_data_all_component
 
 
@@ -367,6 +384,7 @@ def select_video():
         start_time = time.time()
         btn_select_video.config(state=tk.DISABLED)
         check_print_image.config(state=tk.DISABLED)
+        check_show_image.config(state=tk.DISABLED)
         update_elapsed_time(start_time)
         threading.Thread(
             target=process_and_predict, args=(video_path, start_time)
@@ -437,6 +455,17 @@ check_print_image = ttk.Checkbutton(
     frame_main, text="Hasilkan dan Simpan Plot Quiver", variable=var_print_image
 )
 check_print_image.pack()
+
+# checkbox tampilkan preview gambar atau tidak
+var_show_image = tk.BooleanVar()
+check_show_image = ttk.Checkbutton(
+    frame_main, text="Tampilkan Preview Gambar", variable=var_show_image
+)
+
+label_image = ttk.Label(frame_main)
+label_image.pack()
+
+check_show_image.pack()
 
 # Tambahkan notebook untuk hasil bertab
 notebook = ttk.Notebook(frame_main)
