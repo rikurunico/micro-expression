@@ -132,6 +132,11 @@ def get_calculate_from_predict(list_decoded_predictions):
             most_common_count = count
             result_prediction = category
 
+    # Sort predictions by percentage in descending order
+    list_predictions = sorted(
+        list_predictions, key=lambda x: x["percentage"], reverse=True
+    )
+
     return result_prediction, list_predictions
 
 
@@ -341,6 +346,7 @@ def process_video(video_path, output_image_directory, print_image=False):
     return frames_data_all_component
 
 
+# Fungsi untuk memprediksi dan mencetak hasil
 # Fungsi untuk memprediksi dan mencetak hasil
 def predict_and_print_results(
     df, model, label_encoder, feature_columns, with_nose=True

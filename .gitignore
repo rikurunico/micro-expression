@@ -13,3 +13,5 @@ output.csv
 output.xlsx
 output*
 test-output/
+temp/
+hasil_test/

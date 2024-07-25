@@ -14,22 +14,8 @@ class Quadran:
             X = np.int_(self.dataA[i])
             Y = np.int_(self.dataB[i])
 
-            # # Cek apakah nilai X berada di dalam rentang yang diinginkan
-            # if X < minimum_value or X > maximum_value:
-            #     X = np.clip(self.dataA[i], minimum_value, maximum_value).astype(int)
-
-            # # Cek apakah nilai Y berada di dalam rentang yang diinginkan
-            # if Y < minimum_value or Y > maximum_value:
-            #     Y = np.clip(self.dataB[i], minimum_value, maximum_value).astype(int)
-
-            # print('Data getQuadran ' , i, ' : ', self.dataA[i])
-            # print('Data x ' , i, ' : ', X, ' Tipe', type(X))
-            # # Y = np.int_(self.dataB[i])
-            # print('Data getQuadran ' , i, ' : ', self.dataB[i])
-            # print('Data y ' , i, ' : ', Y, ' Tipe', type(Y))
-
             tetha = np.degrees(np.arctan2(Y, X)) + 360 * (Y < 0)
-            magnitude = np.sqrt(np.power(X, 2) + np.power(Y, 2))
+            magnitude = np.sqrt(np.power(X, 2) + np.power(Y, 2)) 
             quadranLabel = ""
 
             if (X == 0) and (Y == 0):
