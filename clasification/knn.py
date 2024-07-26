@@ -78,9 +78,9 @@ class KNNClassifier:
             param_grid = {
                 "n_neighbors": np.arange(1, 4),
                 # "metric": ["minkowski", "euclidean", "manhattan"],
-                "metric": ["euclidean"],
+                "metric": ["manhattan"],
                 # use euclidean only
-                "p": [1, 2],
+                # "p": [1, 2],
             }
 
             # gunakan KFold dengan k=10
