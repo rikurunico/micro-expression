@@ -47,5 +47,6 @@ def extract_component_as_image(
         selected_component_image_gray,
     )
 
+
     # Get pixel values for blocks
     return selected_component_image_gray
