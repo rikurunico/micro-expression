@@ -76,18 +76,18 @@ class KNNClassifier:
     def train_model(self, n_neighbors=5, metric="minkowski", p=2, autoParams=False):
         if autoParams:
             param_grid = {
-                "n_neighbors": np.arange(1, 4),
-                # "metric": ["minkowski", "euclidean", "manhattan"],
-                "metric": ["manhattan"],
-                # use euclidean only
-                # "p": [1, 2],
+                # Ensure n_neighbors are integers wrapped in a list
+                "n_neighbors": [1, 3],  # Corrected: integers in a list
+                "metric": ["minkowski"],  # Use metrics as strings in a list
+                "p": [1, 2, 3],  # List of integers for p values
             }
 
-            # gunakan KFold dengan k=10
+            # Use KFold with k=10 for cross-validation
             cv = KFold(n_splits=10, shuffle=True, random_state=0)
 
+            # Added verbose=3 to print details of each iteration
             grid_search = GridSearchCV(
-                KNeighborsClassifier(), param_grid, cv=cv, n_jobs=-1
+                KNeighborsClassifier(), param_grid, cv=cv, n_jobs=-1, verbose=3
             )
 
             grid_search.fit(self.X_train, self.y_train)
